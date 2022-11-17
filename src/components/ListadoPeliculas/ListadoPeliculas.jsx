@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useRef } from "react";
 
 const ListadoPeliculas = () => {
+  const inputRef = useRef(null);
   const [films, setFilms] = useState([]);
+  const [arrO, setArrO] = useState([]);
+  const [oLfilms, setoLfilms] = useState([]);
 
   let arr = [];
   //NPages parecia ser 718323 pero la API pone como máximo de página la 500
   async function getAllFilms() {
-    //React strict mode renders the components twice
+    //React strict mode renderiza el componente 2 veces la primera vez
     // const response = await fetch(
     //   ` https://api.themoviedb.org/3/discover/movie?api_key=516be3b52cf7301c283cf075e21941e3&language=en-US&page=${1}
     //   `
@@ -25,13 +29,12 @@ const ListadoPeliculas = () => {
           const dataResults = await data.results;
           setFilms([...films, ...dataResults]);
           for (let i = 0; i < 20; i++) {
-      
             let tempArr = [];
             const aux = { id: dataResults[i].id, title: dataResults[i].title };
-            tempArr = [...tempArr, aux]
+            tempArr = [...tempArr, aux];
             //scope de tempArr
             arr = [...arr, ...tempArr];
-            console.log(arr)
+            setArrO([...arr, ...tempArr]);
           }
         })
         .catch((e) => {
@@ -40,21 +43,38 @@ const ListadoPeliculas = () => {
     }
   }
 
-
-
-  const getSearch = (e) => {
-    console.log(arr);
-
-    for (const title in arr) {
-        if (title.lastIndexOf(e) === 0) {
-        return  <Link to={"/detalles/" + 446807}>Mas informacion </Link>
-        
+  function isPrefix(a, b) {
+    //Caso base 1: String a vacia
+    if (a.length === 0) return true;
+    //Caso base 2: String b vacia y String a no vacia
+    if (b.length === 0) return false;
+    //Caso general: Ninguna String Vacia
+    else {
+      //Si no coinciden los caracteres
+      if (a.charAt(0) !== b.charAt(0)) return false;
+      else {
+        //Si coinciden y es la ultima comparacion
+        if (a.length === 1) return true;
+        //Si coinciden pero aun quedan mas comparaciones
+        else return isPrefix(a.substring(1), b.substring(1));
       }
     }
+  }
 
-  };
+  function handleClick() {
 
-  
+    const filteredFilms = arrO.filter((peli)=>{if (isPrefix(inputRef.current.value, peli.title) && !oLfilms.includes(peli)) {return peli}});
+    setoLfilms(filteredFilms)
+
+    // for (let i = 1; i < arrO.length; i++) {
+    //   if (isPrefix(inputRef.current.value, arrO[i].title)) {
+    //     if (!oLfilms.includes(arrO[i])) {
+          
+    //     }
+    //   }
+    // }
+  }
+
   useEffect(() => {
     getAllFilms();
   }, []);
@@ -63,15 +83,12 @@ const ListadoPeliculas = () => {
     <div>
       <h1>Listado de películas</h1>
 
-      <input
-        onChange={(e) => {
-          getSearch(e.target.value);
-        }}
-      ></input>
+      <input ref={inputRef}></input>
+      <button onClick={handleClick}> click me</button>
 
-      {/* {films.map((ele, index) => (
-        <li>{ele.title}</li>
-      ))}  */}
+      {oLfilms.map((elem, index) => (
+        <li key={elem.id}> {elem.title} </li>
+      ))}
     </div>
   );
 };
