@@ -3,6 +3,10 @@
 
     margin-left: 50px;
 }
+.margen {
+
+    margin-left: 7px;
+}
 
 .contenedor-datos{
     display: flex;

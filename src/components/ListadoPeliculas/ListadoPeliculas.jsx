@@ -79,7 +79,7 @@ const ListadoPeliculas = () => {
       <h1>Listado de películas</h1>
 
       <input ref={inputRef}></input>
-      <button onClick={handleClick}> click me</button>
+      <button onClick={handleClick} className="margen"> Buscar </button>
       <li className="contenedor-datos">
         {oLfilms.map((elem, index) => (
           <Link to={"/detalles/" + elem.id}> {elem.title} </Link>
