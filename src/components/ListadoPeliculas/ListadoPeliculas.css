@@ -1,0 +1,14 @@
+
+.contenedor {
+
+    margin-left: 50px;
+}
+
+.contenedor-datos{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    padding: 20px;
+    height: 50%;
+    overflow: scroll;
+}

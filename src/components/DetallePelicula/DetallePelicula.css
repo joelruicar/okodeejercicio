@@ -1,0 +1,21 @@
+
+.contenedor-datos{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    margin-left: 50px;
+    padding: 20px;
+    height: 50%;
+    overflow: scroll;
+}
+
+
+.contenedor-datos2{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    margin-left: 50px;
+    padding: 20px;
+    height: 50%;
+    overflow: scroll;
+}
